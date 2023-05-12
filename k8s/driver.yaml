@@ -28,3 +28,19 @@ spec:
       targetPort: 8081
   selector:
     app: driver
+
+---
+apiVersion: v1
+kind: Gateway
+metadata:
+  name: driver-gateway
+spec:
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+  selector:
+    istio: ingressgateway
