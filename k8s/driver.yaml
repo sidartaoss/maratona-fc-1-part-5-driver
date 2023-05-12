@@ -35,8 +35,6 @@ kind: Gateway
 metadata:
   name: driver-gateway
 spec:
-  selector:
-    istio: ingressgateway
   servers:
     - port:
         number: 80
@@ -44,3 +42,5 @@ spec:
         protocol: HTTP
       hosts:
         - "*"
+  selector:
+    istio: ingressgateway
