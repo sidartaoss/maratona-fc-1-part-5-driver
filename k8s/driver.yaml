@@ -30,11 +30,13 @@ spec:
     app: driver
 
 ---
-apiVersion: v1
+apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: driver-gateway
 spec:
+  selector:
+    istio: ingressgateway
   servers:
     - port:
         number: 80
@@ -42,5 +44,23 @@ spec:
         protocol: HTTP
       hosts:
         - "*"
-  selector:
-    istio: ingressgateway
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: driver-vs
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - driver-gateway
+  http:
+    - match:
+        - uri:
+          prefix: /drivers
+      route:
+        - destination:
+          port:
+            number: 8081
+          host: driver-service
